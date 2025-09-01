@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "mod_codenamed_end",
+	"version": "${mod_version}",
+
+	"name": "Mod Codenamed Fishing",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [ "Solstice" ],
+	"contact": {
+		"homepage": "https://github.com/Solstace-MC",
+		"sources": "https://github.com/Solstace-MC/???"
+	},
+	"license": "LGPL-3.0",
+	"icon": "assets/mod_codenamed_end/icon.png",
+
+	"environment": "*",
+	"entrypoints": {
+		"main": [ "org.solstice.end.ModCodenamedEnd" ],
+		"client": [ "org.solstice.end.client.ModClient" ],
+		"fabric-datagen": [ "org.solstice.end.datagen.ModDataGenerator" ]
+	},
+	"mixins": [ "mod_codenamed_end.mixins.json" ],
+	"accessWidener": "mod_codenamed_end.accesswidener",
+
+	"depends": {
+		"minecraft": "*",
+		"fabric-api": "*",
+		"euclids_elements": "*"
+	},
+	"suggests": {
+		"minecraft": "~${minecraft_version}",
+		"fabric-api": "~${fabric_version}",
+		"euclids_elements": "~${euclids_elements_version}"
+	}
+}

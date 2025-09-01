@@ -1,0 +1,11 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "mod_codenamed_end:block/thornwood_spike"
+	},
+	"display": {
+		"head": {
+			"translation": [ 0, 14, -5 ]
+		}
+	}
+}
