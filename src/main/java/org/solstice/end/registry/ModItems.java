@@ -1,6 +1,5 @@
 package org.solstice.end.registry;
 
-import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
@@ -9,6 +8,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import org.solstice.end.ModCodenamedEnd;
+import org.solstice.end.content.item.TickingBucketItem;
 
 import java.util.function.Function;
 
@@ -17,10 +17,10 @@ public class ModItems {
     public static void init() {}
 
 	public static final Item ACID_BUCKET = register("acid_bucket",
-		settings -> new BucketItem(ModFluids.ACID, settings),
+		settings -> new TickingBucketItem(ModFluids.ACID, settings),
 		new Item.Settings()
 			.recipeRemainder(Items.BUCKET)
-			.maxCount(1)
+			.maxDamage(16)
 	);
 
 	public static Item register(String name) {

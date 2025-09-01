@@ -1,22 +1,53 @@
 package org.solstice.end.content.fluid;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.FluidBlock;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.registry.tag.FluidTags;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
-import org.solstice.end.registry.ModBlocks;
-import org.solstice.end.registry.ModFluids;
+import org.solstice.end.content.entity.DissolvableEntity;
+import org.solstice.end.registry.*;
+
+import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public abstract class AcidFluid extends FlowableFluid {
+
+	protected final Random random;
+
+	public AcidFluid() {
+		this.random = Random.create();
+	}
 
 	@Override
 	public Fluid getFlowing() {
@@ -29,28 +60,30 @@ public abstract class AcidFluid extends FlowableFluid {
 	}
 
 	@Override
+	public boolean matchesType(Fluid fluid) {
+		return fluid.isIn(ModTags.ACID);
+	}
+
+	public Item getBucketItem() {
+		return ModItems.ACID_BUCKET;
+	}
+
+	@Override
 	protected boolean isInfinite(World world) {
 		return false;
 	}
 
 	@Override
-	protected void beforeBreakingBlock(WorldAccess world, BlockPos pos, BlockState state) {
-
-	}
+	protected void beforeBreakingBlock(WorldAccess world, BlockPos pos, BlockState state) {}
 
 	@Override
 	protected int getMaxFlowDistance(WorldView world) {
-		return 4;
+		return 3;
 	}
 
 	@Override
 	protected int getLevelDecreasePerBlock(WorldView world) {
 		return 1;
-	}
-
-	@Override
-	public Item getBucketItem() {
-		return null;
 	}
 
 	@Override
@@ -60,12 +93,12 @@ public abstract class AcidFluid extends FlowableFluid {
 
 	@Override
 	public int getTickRate(WorldView world) {
-		return 0;
+		return 15;
 	}
 
 	@Override
 	protected float getBlastResistance() {
-		return 128;
+		return 100;
 	}
 
 	@Override
@@ -73,7 +106,29 @@ public abstract class AcidFluid extends FlowableFluid {
 		return ModBlocks.ACID.getDefaultState().with(FluidBlock.LEVEL, getBlockStateLevel(state));
 	}
 
+	@Override
+	public void onScheduledTick(World rawWorld, BlockPos pos, FluidState state) {
+		super.onScheduledTick(rawWorld, pos, state);
+		if (!(rawWorld instanceof ServerWorld world)) return;
+
+		rawWorld.scheduleFluidTick(pos, this, this.getTickRate(rawWorld));
+
+		Box box = new Box(pos);
+		List<Entity> entities = rawWorld.getEntitiesByClass(Entity.class, box, item -> true);
+		for (Entity entity : entities) {
+			if (entity instanceof DissolvableEntity dissolvable) {
+				dissolvable.dissolve(world, pos);
+				Vec3d vec = entity.getPos();
+				world.spawnParticles(ModParticles.ACID_BUBBLE, vec.x, vec.y, vec.z, 3, 0.1, 0.25, 0.1, 0);
+			}
+		}
+	}
+
 	public static class Still extends AcidFluid {
+
+		public Still() {
+			super();
+		}
 
 		@Override
 		public int getLevel(FluidState state) {
@@ -88,6 +143,10 @@ public abstract class AcidFluid extends FlowableFluid {
 	}
 
 	public static class Flowing extends AcidFluid {
+
+		public Flowing() {
+			super();
+		}
 
 		@Override
 		protected void appendProperties(StateManager.Builder<Fluid, FluidState> builder) {

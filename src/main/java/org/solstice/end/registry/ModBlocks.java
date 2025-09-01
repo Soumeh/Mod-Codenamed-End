@@ -17,6 +17,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import org.solstice.end.ModCodenamedEnd;
+import org.solstice.end.content.block.FacingCrossBlock;
 
 import java.util.function.Function;
 
@@ -27,37 +28,72 @@ public class ModBlocks {
 	@Environment(EnvType.CLIENT)
 	public static void clientInit() {
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
-				THORNWOOD_LEAVES,
-				THORNWOOD_SPIKE
+			THORNWOOD_LEAVES,
+			THORNWOOD_SPIKE,
+			POPLOOM_SHRUB
 		);
 	}
 
 	public static final Block THORNWOOD_LOG = register("thornwood_log",
-            PillarBlock::new,
-			AbstractBlock.Settings.create()
-					.instrument(NoteBlockInstrument.BASS)
-					.strength(2.0F)
-					.sounds(BlockSoundGroup.WOOD)
-					.burnable()
+		PillarBlock::new,
+		AbstractBlock.Settings.create()
+			.instrument(NoteBlockInstrument.BASS)
+			.strength(2.0F)
+			.sounds(BlockSoundGroup.WOOD)
+			.burnable()
 	);
 	public static final Block THORNWOOD_LEAVES = register("thornwood_leaves",
-			LeavesBlock::new,
-			AbstractBlock.Settings.create()
-					.mapColor(MapColor.DARK_GREEN)
-					.strength(0.2F)
-					.ticksRandomly()
-					.sounds(BlockSoundGroup.GRASS)
-					.nonOpaque()
-					.allowsSpawning(Blocks::canSpawnOnLeaves)
-					.suffocates(Blocks::never)
-					.blockVision(Blocks::never)
-					.burnable()
-					.pistonBehavior(PistonBehavior.DESTROY)
-					.solidBlock(Blocks::never)
+		LeavesBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.DARK_GREEN)
+			.strength(0.2F)
+			.ticksRandomly()
+			.sounds(BlockSoundGroup.GRASS)
+			.nonOpaque()
+			.allowsSpawning(Blocks::canSpawnOnLeaves)
+			.suffocates(Blocks::never)
+			.blockVision(Blocks::never)
+			.burnable()
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.solidBlock(Blocks::never)
 	);
 	public static final Block THORNWOOD_SPIKE = register("thornwood_spike",
-			settings -> new AmethystClusterBlock(7.0F, 3.0F, settings),
-			AbstractBlock.Settings.create()
+		FacingCrossBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.DARK_GREEN)
+			.strength(1.0F)
+			.sounds(BlockSoundGroup.WOOD)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.burnable()
+	);
+	public static final Block POPLOOM_SHRUB = register("poploom_shrub",
+		ShortPlantBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.DARK_GREEN)
+			.replaceable()
+			.noCollision()
+			.breakInstantly()
+			.sounds(BlockSoundGroup.GRASS)
+			.offset(AbstractBlock.OffsetType.XYZ)
+			.burnable()
+			.pistonBehavior(PistonBehavior.DESTROY)
+	);
+
+	public static final Block MIRITE = register("mirite",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.STONE_GRAY)
+			.instrument(NoteBlockInstrument.BASEDRUM)
+			.requiresTool()
+			.strength(1.5f, 6.0f)
+	);
+	public static final Block STAINED_MIRITE = register("stained_mirite",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.STONE_GRAY)
+			.instrument(NoteBlockInstrument.BASEDRUM)
+			.requiresTool()
+			.strength(1.5f, 6.0f)
 	);
 
 	public static final Block ACID = register("acid",

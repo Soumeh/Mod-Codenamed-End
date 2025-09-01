@@ -5,10 +5,7 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.solstice.end.registry.ModBlocks;
-import org.solstice.end.registry.ModBiomes;
-import org.solstice.end.registry.ModFluids;
-import org.solstice.end.registry.ModItems;
+import org.solstice.end.registry.*;
 
 public class ModCodenamedEnd implements ModInitializer {
 
@@ -25,6 +22,10 @@ public class ModCodenamedEnd implements ModInitializer {
 		ModFluids.init();
 		ModBlocks.init();
 		ModItems.init();
+
+		ModParticles.init();
+		ModDamageSources.init();
+		ModItemGroups.init();
 	}
 
 }
