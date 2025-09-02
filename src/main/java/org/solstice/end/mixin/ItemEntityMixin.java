@@ -4,6 +4,9 @@ import net.minecraft.block.DispenserBlock;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -11,11 +14,14 @@ import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.registry.tag.EnchantmentTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import org.solstice.end.content.entity.DissolvableEntity;
+import org.solstice.end.content.entity.EvilExperienceOrbEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -28,7 +34,11 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 @Mixin(ItemEntity.class)
-public abstract class ItemEntityMixin implements DissolvableEntity {
+public abstract class ItemEntityMixin extends Entity implements DissolvableEntity {
+
+	public ItemEntityMixin(EntityType<?> type, World world) {
+		super(type, world);
+	}
 
 	@Unique private static final int UNCRAFTING_RATE_MULTIPLIER = 8;
 	@Unique private static final int UNENCHANTING_RATE_MULTIPLIER = 8;
@@ -90,6 +100,14 @@ public abstract class ItemEntityMixin implements DissolvableEntity {
 		ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(stack.getEnchantments());
 		builder.remove(entry -> entry.equals(enchantment));
 		stack.set(DataComponentTypes.ENCHANTMENTS, builder.build());
+
+		int experience = enchantment.value().getAnvilCost() * stack.getEnchantments().getLevel(enchantment);
+		if (enchantment.isIn(EnchantmentTags.CURSE)) {
+			EvilExperienceOrbEntity.spawn(world, this.getPos(), experience * 2);
+		} else {
+			ExperienceOrbEntity.spawn(world, this.getPos(), experience);
+		}
+
 	}
 
 }
