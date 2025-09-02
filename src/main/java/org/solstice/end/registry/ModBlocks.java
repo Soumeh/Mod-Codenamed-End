@@ -78,6 +78,18 @@ public class ModBlocks {
 			.burnable()
 			.pistonBehavior(PistonBehavior.DESTROY)
 	);
+//	public static final Block POPLOOM_SHRUB = register("poploom_shrub",
+//		Sappling::new,
+//		AbstractBlock.Settings.create()
+//			.mapColor(MapColor.DARK_GREEN)
+//			.replaceable()
+//			.noCollision()
+//			.breakInstantly()
+//			.sounds(BlockSoundGroup.GRASS)
+//			.offset(AbstractBlock.OffsetType.XYZ)
+//			.burnable()
+//			.pistonBehavior(PistonBehavior.DESTROY)
+//	);
 
 	public static final Block MIRITE = register("mirite",
 		Block::new,
