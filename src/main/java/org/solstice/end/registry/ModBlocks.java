@@ -7,7 +7,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -17,6 +16,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import org.solstice.end.ModCodenamedEnd;
+import org.solstice.end.content.block.EndSaplingBlock;
 import org.solstice.end.content.block.FacingCrossBlock;
 
 import java.util.function.Function;
@@ -30,7 +30,8 @@ public class ModBlocks {
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
 			THORNWOOD_LEAVES,
 			THORNWOOD_SPIKE,
-			POPLOOM_SHRUB
+			POPLOOM_SHRUB,
+			THORNWOOD_SAPLING
 		);
 	}
 
@@ -62,6 +63,7 @@ public class ModBlocks {
 		AbstractBlock.Settings.create()
 			.mapColor(MapColor.DARK_GREEN)
 			.strength(1.0F)
+			.noCollision()
 			.sounds(BlockSoundGroup.WOOD)
 			.pistonBehavior(PistonBehavior.DESTROY)
 			.burnable()
@@ -77,6 +79,16 @@ public class ModBlocks {
 			.offset(AbstractBlock.OffsetType.XYZ)
 			.burnable()
 			.pistonBehavior(PistonBehavior.DESTROY)
+	);
+	public static final Block THORNWOOD_SAPLING = register("thornwood_sapling",
+		settings -> new EndSaplingBlock(ModWorldgen.THORNY_TREE_FEATURE, settings),
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.DARK_GREEN)
+			.noCollision()
+			.breakInstantly()
+			.sounds(BlockSoundGroup.GRASS)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.burnable()
 	);
 //	public static final Block POPLOOM_SHRUB = register("poploom_shrub",
 //		Sappling::new,

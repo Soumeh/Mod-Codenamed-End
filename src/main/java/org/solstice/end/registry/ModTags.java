@@ -1,6 +1,7 @@
 package org.solstice.end.registry;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -13,9 +14,9 @@ public class ModTags {
 
 	public static void init() {}
 
-	public static final TagKey<Fluid> ACID = of("acid",
-		RegistryKeys.FLUID
-	);
+	public static final TagKey<Fluid> ACID = of("acid", RegistryKeys.FLUID);
+
+	public static final TagKey<Block> END_SAPLING_PLACEABLE = of("end_sapling_placeable", RegistryKeys.BLOCK);
 
 	protected static <T> TagKey<T> of(String name, RegistryKey<Registry<T>> key) {
 		return TagKey.of(key, ModCodenamedEnd.of(name));

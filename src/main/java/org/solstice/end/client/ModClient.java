@@ -1,10 +1,7 @@
 package org.solstice.end.client;
 
 import net.fabricmc.api.ClientModInitializer;
-import org.solstice.end.registry.ModBlocks;
-import org.solstice.end.registry.ModEntityTypes;
-import org.solstice.end.registry.ModFluids;
-import org.solstice.end.registry.ModParticles;
+import org.solstice.end.registry.*;
 
 public class ModClient implements ClientModInitializer {
 
@@ -14,6 +11,7 @@ public class ModClient implements ClientModInitializer {
 		ModBlocks.clientInit();
 		ModFluids.clientInit();
 		ModParticles.clientInit();
+		ModBiomes.clientInit();
 	}
 
 }

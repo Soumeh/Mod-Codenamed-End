@@ -1,0 +1,14 @@
+{
+	"feature": "mod_codenamed_end:thorny_tree",
+	"placement": [
+		{
+			"type": "minecraft:block_predicate_filter",
+			"predicate": {
+				"type": "minecraft:would_survive",
+				"state": {
+					"Name": "mod_codenamed_end:thornwood_sapling"
+				}
+			}
+		}
+	]
+}

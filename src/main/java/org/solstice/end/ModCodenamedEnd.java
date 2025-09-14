@@ -19,12 +19,12 @@ public class ModCodenamedEnd implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ModBiomes.init();
+		ModWorldgen.init();
 
 		ModEntityTypes.init();
 		ModFluids.init();
 		ModBlocks.init();
 		ModItems.init();
-		ModWorldgen.init();
 
 		ModParticles.init();
 		ModDamageSources.init();

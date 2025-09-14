@@ -43,7 +43,7 @@ public class EvilExperienceOrbRenderer extends ExperienceOrbEntityRenderer {
 		vertex(vertices, entry, 0.5F, 0.75F, 255, green, blue, u2, v1, light);
 		vertex(vertices, entry, -0.5F, 0.75F, 255, green, blue, u1, v1, light);
 		matrices.pop();
-		super.render(entity, yaw, tickDelta, matrices, vertexConsumer, light);
+//		super.render(entity, yaw, tickDelta, matrices, vertexConsumer, light);
 	}
 
 	private static void vertex(VertexConsumer vertexConsumer, MatrixStack.Entry matrix, float x, float y, int red, int green, int blue, float u, float v, int light) {
